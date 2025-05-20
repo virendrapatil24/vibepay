@@ -14,7 +14,7 @@ app.use(cors());
 app.use("/api/v1/user", userRouter);
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   console.error(err.stack);
-  res.status(500).json({ message: "Internal server error" });
+  res.status(500).json({ message: err.message || "Internal server error" });
 });
 
 const connectDB = async (): Promise<void> => {
