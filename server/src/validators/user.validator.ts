@@ -1,3 +1,4 @@
+import { PassThrough } from "stream";
 import { z } from "zod";
 
 export const userCreateSchema = z.object({
@@ -11,5 +12,10 @@ export const userCreateSchema = z.object({
     .max(50, "Last name must be less than 50 characters"),
   email: z.string().email("Invalid email address"),
   phone: z.string().min(1, "Phone number is required"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});
+
+export const userLoginSchema = z.object({
+  email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
 });

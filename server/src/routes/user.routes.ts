@@ -8,6 +8,6 @@ const userRouter = Router();
 userRouter.post("/signup", asyncHandler(userController.createUser));
 
 //login
-userRouter.post("/login");
+userRouter.post("/login", asyncHandler(userController.loginUser));
 
 export default userRouter;
