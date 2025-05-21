@@ -8,6 +8,7 @@ import { User } from "../models/user.model";
 import bcrypt from "bcrypt";
 import { generateToken } from "../auth/auth.utils";
 import { Types } from "mongoose";
+import { Account } from "../models/accont.model";
 
 export const createUser = async (
   req: Request,
@@ -40,6 +41,14 @@ export const createUser = async (
     password: hashedPassword,
   });
   await newUser.save();
+
+  const userId = newUser._id;
+
+  await Account.create({
+    userId,
+    balance: 1 + Math.floor(Math.random() * 10000),
+  });
+
   res.status(201).json({ message: "User created successfully" });
 };
 
@@ -118,7 +127,7 @@ export const getUserByName = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { name } = req.params;
+  const { name } = req.params || "";
 
   const bulkUsers = await User.find({
     $or: [
