@@ -113,3 +113,33 @@ export const updateUser = async (
     user: updatedUser,
   });
 };
+
+export const getUserByName = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { name } = req.params;
+
+  const bulkUsers = await User.find({
+    $or: [
+      { firstName: { $regex: name, $options: "i" } },
+      { lastName: { $regex: name, $options: "i" } },
+    ],
+  });
+
+  if (bulkUsers.length === 0) {
+    res.status(404).json({ message: "No users found" });
+    return;
+  }
+
+  const users = bulkUsers.map((user) => ({
+    id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+  }));
+
+  res.status(200).json({
+    message: "Users found",
+    users,
+  });
+};
