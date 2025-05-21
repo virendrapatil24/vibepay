@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/user.routes";
 import cors from "cors";
+import accountRouter from "./routes/account.routes";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/account", accountRouter);
 app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ message: err.message || "Internal server error" });
