@@ -127,12 +127,16 @@ export const getUserByName = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { name } = req.params || "";
+  if (!req.user) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  const { userName } = req.query || "";
 
   const bulkUsers = await User.find({
     $or: [
-      { firstName: { $regex: name, $options: "i" } },
-      { lastName: { $regex: name, $options: "i" } },
+      { firstName: { $regex: userName, $options: "i" } },
+      { lastName: { $regex: userName, $options: "i" } },
     ],
   });
 
@@ -141,11 +145,14 @@ export const getUserByName = async (
     return;
   }
 
-  const users = bulkUsers.map((user) => ({
-    id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-  }));
+  const userId = req.user.id;
+  const users = bulkUsers
+    .filter((user) => user.id !== userId)
+    .map((user) => ({
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    }));
 
   res.status(200).json({
     message: "Users found",

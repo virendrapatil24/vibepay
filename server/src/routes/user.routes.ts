@@ -14,6 +14,10 @@ userRouter.post("/login", asyncHandler(userController.loginUser));
 //update user
 userRouter.put("/", isAuthenticated, asyncHandler(userController.updateUser));
 
-userRouter.get("/bulk/:userName");
+userRouter.get(
+  "/bulk",
+  isAuthenticated,
+  asyncHandler(userController.getUserByName)
+);
 
 export default userRouter;
