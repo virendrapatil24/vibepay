@@ -2,17 +2,22 @@ import { Request, Response } from "express";
 import {
   userCreateSchema,
   userLoginSchema,
+  userUpdateSchema,
 } from "../validators/user.validator";
 import { User } from "../models/user.model";
 import bcrypt from "bcrypt";
 import { generateToken } from "../auth/auth.utils";
 import { Types } from "mongoose";
 
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const parsed = userCreateSchema.safeParse(req.body);
 
   if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.flatten() });
+    res.status(400).json({ error: parsed.error.flatten() });
+    return;
   }
 
   const emailLowerCase = parsed.data.email.toLocaleLowerCase();
@@ -21,8 +26,9 @@ export const createUser = async (req: Request, res: Response) => {
   });
   if (existingUser) {
     const duplicateField =
-      existingUser.email === parsed.data.email ? "Email" : "Phone number";
-    return res.status(422).json({ error: `${duplicateField} already exists` });
+      existingUser.email === emailLowerCase ? "Email" : "Phone number";
+    res.status(422).json({ error: `${duplicateField} already exists` });
+    return;
   }
 
   const hashedPassword = await bcrypt.hash(parsed.data.password, 10);
@@ -34,26 +40,29 @@ export const createUser = async (req: Request, res: Response) => {
     password: hashedPassword,
   });
   await newUser.save();
-  return res.status(201).json({ message: "User created successfully" });
+  res.status(201).json({ message: "User created successfully" });
 };
 
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const parsed = userLoginSchema.safeParse(req.body);
   if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.flatten() });
+    res.status(400).json({ error: parsed.error.flatten() });
+    return;
   }
 
   const emailLowerCase = parsed.data.email.toLocaleLowerCase();
   const existingUser = await User.findOne({ email: emailLowerCase });
   if (!existingUser) {
-    return res.status(400).json({ error: "User not found" });
+    res.status(400).json({ error: "User not found" });
+    return;
   }
   const isPasswordValid = await bcrypt.compare(
     parsed.data.password,
     existingUser.password
   );
   if (!isPasswordValid) {
-    return res.status(401).json({ error: "Invalid password" });
+    res.status(401).json({ error: "Invalid password" });
+    return;
   }
 
   const { error, token } = generateToken({
@@ -61,10 +70,46 @@ export const loginUser = async (req: Request, res: Response) => {
   });
 
   if (error) {
-    return res.status(500).json({ error: "Token generation failed" });
+    res.status(500).json({ error: "Token generation failed" });
+    return;
   }
 
-  return res
-    .status(200)
-    .json({ message: "User logged in successfully", authToken: token });
+  res.status(200).json({
+    message: "User logged in successfully",
+    authToken: token,
+    user: existingUser,
+  });
+};
+
+export const updateUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  if (!req.user) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+  const parsed = userUpdateSchema.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.flatten() });
+    return;
+  }
+
+  const updatePayload = { ...parsed.data };
+  if (updatePayload.password) {
+    const hashedPassword = await bcrypt.hash(updatePayload.password, 10);
+    updatePayload.password = hashedPassword;
+  }
+
+  const userId = req.user.id;
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    { $set: updatePayload },
+    { new: true }
+  );
+
+  res.status(200).json({
+    message: "User updated successfully",
+    user: updatedUser,
+  });
 };

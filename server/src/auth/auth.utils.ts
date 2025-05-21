@@ -3,8 +3,16 @@ import jwt from "jsonwebtoken";
 
 const SECRET_KEY = process.env.SECRET_KEY || "";
 
-interface IPayload {
+export interface IPayload {
   id: string;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: IPayload;
+    }
+  }
 }
 
 export const generateToken = (payload: IPayload) => {
