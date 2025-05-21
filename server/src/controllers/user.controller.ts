@@ -5,7 +5,7 @@ import {
 } from "../validators/user.validator";
 import { User } from "../models/user.model";
 import bcrypt from "bcrypt";
-import { generateToken } from "../auth/authentication";
+import { generateToken } from "../auth/auth.utils";
 import { Types } from "mongoose";
 
 export const createUser = async (req: Request, res: Response) => {
