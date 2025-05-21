@@ -8,7 +8,7 @@ import { User } from "../models/user.model";
 import bcrypt from "bcrypt";
 import { generateToken } from "../auth/auth.utils";
 import { Types } from "mongoose";
-import { Account } from "../models/accont.model";
+import { Account } from "../models/account.model";
 
 export const createUser = async (
   req: Request,
