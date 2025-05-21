@@ -1,7 +1,4 @@
-import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-
-const SECRET_KEY = process.env.SECRET_KEY || "";
 
 export interface IPayload {
   id: string;
@@ -17,22 +14,22 @@ declare global {
 
 export const generateToken = (payload: IPayload) => {
   try {
-    if (!SECRET_KEY) {
+    if (!process.env.SECRET_KEY) {
       throw new Error("SECRET_KEY is not defined");
     }
-    const token = jwt.sign(payload, SECRET_KEY);
+    const token = jwt.sign(payload, process.env.SECRET_KEY);
     return { token };
   } catch (err) {
-    return { error: "token generation failed" };
+    return { error: "Token generation failed" };
   }
 };
 
 export const verifyToken = (token: string) => {
   try {
-    if (!SECRET_KEY) {
+    if (!process.env.SECRET_KEY) {
       throw new Error("SECRET_KEY is not defined");
     }
-    const decoded = jwt.verify(token, SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
     return decoded;
   } catch (err) {
     throw new Error("Invalid or expired token");
