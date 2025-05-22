@@ -13,10 +13,6 @@ accountRouter.get(
 );
 
 //send money
-accountRouter.post(
-  "/send",
-  isAuthenticated,
-  asyncHandler(accountController.sendMoney)
-);
+accountRouter.post("/send", isAuthenticated, accountController.sendMoney);
 
 export default accountRouter;
