@@ -1,3 +1,4 @@
+import { Menu } from "lucide-react";
 import AppLogo from "../assets/images/vibepay_logo.png";
 import MenuLinks from "./MenuLinks";
 
@@ -14,15 +15,25 @@ const Navbar = () => {
     <div className="bg-black">
       <div className="container">
         <div className="flex justify-between items-center py-4">
-          <div>
-            <img src={AppLogo} alt="vibepay_logo" className="h-12 w-12" />
+          <div className="relative">
+            <div className="absolute top-2 bottom-0 w-full bg-[linear-gradient(#a0facb,#63f2b0,#01c87a,#008253,#003021)] blur-md"></div>
+            <img
+              src={AppLogo}
+              alt="vibepay_logo"
+              className="h-12 w-12 relative rounded-lg"
+            />
           </div>
-          <nav className="items-center flex gap-6">
+          <Menu className="text-white h-10 w-10 sm:hidden" />
+          <nav className="items-center gap-6 hidden sm:flex">
             {menuOptions.map((options, index) => (
               <MenuLinks name={options.name} path={options.path} key={index} />
             ))}
-            {/* <button className="bg-white py-2 px-4 rounded-lg">Log In</button> */}
-            <button className="bg-white py-2 px-4 rounded-lg">Sign Up</button>
+            <button className="text-white/80 hover:text-white underline transition duration-300">
+              Log In
+            </button>
+            <button className="bg-white/90 hover:bg-white py-2 px-4 rounded-lg transition duration-300">
+              Get started
+            </button>
           </nav>
         </div>
       </div>
