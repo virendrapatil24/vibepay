@@ -1,12 +1,12 @@
 import Hero from "../components/Hero";
-import ProductShowcase from "../components/ProductShowcase";
+import Features from "../components/Features";
 import FAQs from "../components/FAQs";
 
 const LandingPage = () => {
   return (
     <>
       <Hero />
-      <ProductShowcase />
+      <Features />
       <FAQs />
     </>
   );
