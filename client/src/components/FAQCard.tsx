@@ -11,7 +11,7 @@ const FAQCard = ({ question, answer }: FAQCardProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-[#3abab3] p-5 sm:p-7 rounded-2xl text-black/80">
+    <div className="bg-[linear-gradient(to_bottom,#3abab3,#42e098)] p-5 sm:p-7 rounded-2xl text-black/80">
       <div
         className="flex gap-1 justify-between items-center hover:cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
