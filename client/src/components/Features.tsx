@@ -34,7 +34,7 @@ const Features = () => {
             standards, and reliable infrastructure to make sending money
             effortless and secure.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 mt-6">
+          <div className="flex flex-col sm:flex-row gap-8 mt-16">
             {features.map((feature) => (
               <FeatureCard
                 title={feature.title}
