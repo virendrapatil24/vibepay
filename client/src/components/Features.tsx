@@ -35,11 +35,12 @@ const Features = () => {
             effortless and secure.
           </p>
           <div className="flex flex-col sm:flex-row gap-8 mt-16">
-            {features.map((feature) => (
+            {features.map((feature, index) => (
               <FeatureCard
                 title={feature.title}
                 description={feature.description}
                 Icon={feature.icon}
+                key={index}
               />
             ))}
           </div>

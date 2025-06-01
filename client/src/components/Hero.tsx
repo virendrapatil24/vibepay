@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-black text-white py-[72px] sm:py-24 bg-[linear-gradient(to_bottom,#000,#143d3b_40%,#3abab3_75%,#42e098_98%)]">
       <div className="container">
@@ -27,7 +30,10 @@ const Hero = () => {
           </p>
         </div>
         <div className="flex justify-center mt-4">
-          <button className="bg-white/90 hover:bg-white text-black py-2 px-4 rounded-lg">
+          <button
+            className="bg-white/90 hover:bg-white text-black py-2 px-4 rounded-lg"
+            onClick={() => navigate("/signup")}
+          >
             Get started
           </button>
         </div>

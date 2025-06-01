@@ -111,7 +111,7 @@ const SignupPage = () => {
 
         <button
           type="submit"
-          className="p-2 mt-4 bg-[linear-gradient(to_right,#3abab3,#42e098)] rounded-full font-medium"
+          className="p-2 mt-4 bg-[linear-gradient(to_right,#3abab3,#42e098)] rounded-lg font-medium"
         >
           Create an account
         </button>

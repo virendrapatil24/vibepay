@@ -1,6 +1,7 @@
 import { Menu } from "lucide-react";
 import AppLogo from "../assets/images/vibepay_logo.png";
 import MenuLinks from "./MenuLinks";
+import { useNavigate } from "react-router-dom";
 
 const menuOptions = [
   { name: "About", path: "#" },
@@ -10,7 +11,12 @@ const menuOptions = [
   { name: "Customers", path: "#" },
 ];
 
-const Navbar = () => {
+interface NavbarProps {
+  user: boolean;
+}
+
+const Navbar = ({ user }: NavbarProps) => {
+  const navigate = useNavigate();
   return (
     <div className="bg-black">
       <div className="container">
@@ -28,12 +34,29 @@ const Navbar = () => {
             {menuOptions.map((options, index) => (
               <MenuLinks name={options.name} path={options.path} key={index} />
             ))}
-            <button className="text-white/80 hover:text-white underline transition duration-300">
-              Log In
-            </button>
-            <button className="bg-white/90 hover:bg-white py-2 px-4 rounded-lg transition duration-300">
-              Get started
-            </button>
+            {user ? (
+              <button
+                className="bg-white/90 hover:bg-white py-2 px-4 rounded-lg transition duration-300"
+                onClick={() => navigate("/logout")}
+              >
+                Sign Out
+              </button>
+            ) : (
+              <>
+                <button
+                  className="text-white/80 hover:text-white underline transition duration-300"
+                  onClick={() => navigate("/login")}
+                >
+                  Log In
+                </button>
+                <button
+                  className="bg-white/90 hover:bg-white py-2 px-4 rounded-lg transition duration-300"
+                  onClick={() => navigate("/signup")}
+                >
+                  Get started
+                </button>
+              </>
+            )}
           </nav>
         </div>
       </div>
