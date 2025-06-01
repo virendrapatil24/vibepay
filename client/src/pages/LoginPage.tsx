@@ -2,6 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import AppLogo from "../assets/images/vibepay_logo.png";
 import { LoginFormPayload, loginSchema } from "../types/user.types";
+import useToast from "../hooks/useToast";
+import { loginUser } from "../services/user.service";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const LoginPage = () => {
   const {
@@ -9,9 +13,19 @@ const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormPayload>({ resolver: zodResolver(loginSchema) });
+  const { showToast } = useToast();
+  const navigate = useNavigate();
+  const { login } = useAuthContext();
 
-  const onSubmit = (data: LoginFormPayload) => {
-    console.log("login done", data);
+  const onSubmit = async (data: LoginFormPayload) => {
+    try {
+      const result = await loginUser(data);
+      showToast(result.message || "Login successful", "success");
+      login(result.authToken);
+      navigate("/");
+    } catch (err: any) {
+      showToast(err.message || "Login Failed", "error");
+    }
   };
 
   return (

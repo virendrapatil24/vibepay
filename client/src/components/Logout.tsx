@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
-const Logout = ({ onLogout }: { onLogout: () => void }) => {
+const Logout = () => {
+  const { logout } = useAuthContext();
   useEffect(() => {
-    onLogout();
-  }, [onLogout]);
+    logout();
+  }, [logout]);
 
   return <Navigate to="/" replace />;
 };

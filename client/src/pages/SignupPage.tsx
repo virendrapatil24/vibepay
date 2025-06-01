@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import AppLogo from "../assets/images/vibepay_logo.png";
 import { SignupFormPayload, signupSchema } from "../types/user.types";
-import { singup } from "../services/user.service";
+import { singupUser } from "../services/user.service";
 import useToast from "../hooks/useToast";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ const SignupPage = () => {
 
   const onSubmit = async (data: SignupFormPayload) => {
     try {
-      const result = await singup(data);
+      const result = await singupUser(data);
       showToast(result.message || "Signup successful", "success");
       navigate("/login");
     } catch (err: any) {

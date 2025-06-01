@@ -2,6 +2,7 @@ import { Menu } from "lucide-react";
 import AppLogo from "../assets/images/vibepay_logo.png";
 import MenuLinks from "./MenuLinks";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const menuOptions = [
   { name: "About", path: "#" },
@@ -11,12 +12,9 @@ const menuOptions = [
   { name: "Customers", path: "#" },
 ];
 
-interface NavbarProps {
-  user: boolean;
-}
-
-const Navbar = ({ user }: NavbarProps) => {
+const Navbar = () => {
   const navigate = useNavigate();
+  const { user } = useAuthContext();
   return (
     <div className="bg-black">
       <div className="container">

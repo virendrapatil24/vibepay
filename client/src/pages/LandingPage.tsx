@@ -4,14 +4,10 @@ import FAQs from "../components/FAQs";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
-interface LandingPageProps {
-  user: boolean;
-}
-
-const LandingPage = ({ user }: LandingPageProps) => {
+const LandingPage = () => {
   return (
     <>
-      <Navbar user={user} />
+      <Navbar />
       <Hero />
       <Features />
       <FAQs />
