@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import AppLogo from "../assets/images/vibepay_logo.png";
 import { SignupFormPayload, signupSchema } from "../types/user.types";
 import { singup } from "../services/user.service";
+import useToast from "../hooks/useToast";
+import { useNavigate } from "react-router-dom";
 
 const SignupPage = () => {
   const {
@@ -10,13 +12,16 @@ const SignupPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<SignupFormPayload>({ resolver: zodResolver(signupSchema) });
+  const { showToast } = useToast();
+  const navigate = useNavigate();
 
   const onSubmit = async (data: SignupFormPayload) => {
     try {
       const result = await singup(data);
-      console.log("Signup success:", result);
-    } catch (err) {
-      console.error("Signup error:", err);
+      showToast(result.message || "Signup successful", "success");
+      navigate("/login");
+    } catch (err: any) {
+      showToast(err.message || "Signup failed", "error");
     }
   };
 
