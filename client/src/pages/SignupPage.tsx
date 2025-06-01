@@ -1,36 +1,23 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import AppLogo from "../assets/images/vibepay_logo.png";
-
-const signupSchema = z.object({
-  firstName: z
-    .string()
-    .min(1, "First name is required")
-    .max(50, "First name must be less than 50 characters"),
-  lastName: z
-    .string()
-    .min(1, "Last name is required")
-    .max(50, "Last name must be less than 50 characters"),
-  email: z.string().email("Invalid email address"),
-  phone: z
-    .string()
-    .min(1, "Phone number is required")
-    .max(10, "Phone number must be less than 10 characters "),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
-});
-
-type SignupFormData = z.infer<typeof signupSchema>;
+import { SignupFormPayload, signupSchema } from "../types/user.types";
+import { singup } from "../services/user.service";
 
 const SignupPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupFormData>({ resolver: zodResolver(signupSchema) });
+  } = useForm<SignupFormPayload>({ resolver: zodResolver(signupSchema) });
 
-  const onSubmit = (data: SignupFormData) => {
-    console.log("form submitted", data);
+  const onSubmit = async (data: SignupFormPayload) => {
+    try {
+      const result = await singup(data);
+      console.log("Signup success:", result);
+    } catch (err) {
+      console.error("Signup error:", err);
+    }
   };
 
   return (

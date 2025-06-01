@@ -1,24 +1,17 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import AppLogo from "../assets/images/vibepay_logo.png";
-
-const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters long"),
-});
-
-type LoginFormData = z.infer<typeof loginSchema>;
+import { LoginFormPayload, loginSchema } from "../types/user.types";
 
 const LoginPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
+  } = useForm<LoginFormPayload>({ resolver: zodResolver(loginSchema) });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log("login done");
+  const onSubmit = (data: LoginFormPayload) => {
+    console.log("login done", data);
   };
 
   return (
