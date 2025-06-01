@@ -9,6 +9,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import Logout from "./components/Logout";
 import { useAuthContext } from "./hooks/useAuthContext";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {
   const { user } = useAuthContext();
@@ -25,6 +26,10 @@ function App() {
           element={user ? <Navigate to="/" /> : <SignupPage />}
         />
         <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/dashboard"
+          element={user ? <DashboardPage /> : <Navigate to="/login" />}
+        />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
