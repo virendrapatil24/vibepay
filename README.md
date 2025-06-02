@@ -22,6 +22,7 @@ vibepay/
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - React 19
 - TypeScript
 - Vite
@@ -32,6 +33,7 @@ vibepay/
 - Zod (Form validation)
 
 ### Backend
+
 - Node.js
 - Express.js
 - TypeScript
@@ -42,12 +44,14 @@ vibepay/
 ## 🚀 Getting Started
 
 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/vibepay.git
 cd vibepay
 ```
 
 2. Install dependencies
+
 ```bash
 # Install client dependencies
 cd client
@@ -59,10 +63,12 @@ npm install
 ```
 
 3. Set up environment variables
+
 - Create `.env` file in the server directory
 - Add necessary environment variables (see server README for details)
 
 4. Start development servers
+
 ```bash
 # Start backend server (from server directory)
 npm run dev
