@@ -1,19 +1,41 @@
 import { useState } from "react";
 
+interface UserProfile {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  id: string;
+  password: string;
+}
+
+interface UpdateProfile {
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+}
+
 export const useAuth = () => {
   const [user, setUser] = useState(() => {
-    return !!localStorage.getItem("vibepayAuthToken");
+    const userStr = localStorage.getItem("vibepayUser");
+    return userStr ? JSON.parse(userStr) : null;
   });
 
-  const login = (token: string) => {
+  const login = (token: string, userData: UserProfile) => {
     localStorage.setItem("vibepayAuthToken", token);
-    setUser(true);
+    localStorage.setItem("vibepayUser", JSON.stringify(userData));
+    setUser(userData);
   };
 
   const logout = () => {
     localStorage.removeItem("vibepayAuthToken");
-    setUser(false);
+    localStorage.removeItem("vibepayUser");
+    setUser(null);
   };
 
-  return { user, login, logout };
+  const update = (userUpdateData: UpdateProfile) => {
+    localStorage.setItem("vibepayUser", JSON.stringify(userUpdateData));
+    setUser(userUpdateData);
+  };
+  return { user, login, logout, update };
 };

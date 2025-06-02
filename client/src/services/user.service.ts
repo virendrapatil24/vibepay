@@ -1,7 +1,12 @@
-import { LoginFormPayload, SignupFormPayload } from "../types/user.types";
+import {
+  LoginFormPayload,
+  SignupFormPayload,
+  UserUpdatePayload,
+} from "../types/user.types";
 import axios, { AxiosResponse } from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const authToken = localStorage.getItem("vibepayAuthToken");
 
 const handleResponse = (response: AxiosResponse) => {
   const { status, data } = response;
@@ -35,6 +40,20 @@ export const loginUser = async (payload: LoginFormPayload) => {
     if (axios.isAxiosError(err)) {
       console.error("Network or server error:", err.message);
     }
-    throw new Error(err.message || "Signup failed. Please try again later.");
+    throw new Error(err.message || "Login failed. Please try again later.");
+  }
+};
+
+export const updateUser = async (payload: UserUpdatePayload) => {
+  try {
+    const response = await axios.put(`${API_URL}/user`, payload, {
+      validateStatus: () => true,
+      headers: { Authorization: `Bearer ${authToken}` },
+    });
+    return handleResponse(response);
+  } catch (err: any) {
+    throw new Error(
+      err.message || "User Update failed. Please try again later."
+    );
   }
 };

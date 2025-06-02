@@ -25,3 +25,28 @@ export const loginSchema = z.object({
 });
 
 export type LoginFormPayload = z.infer<typeof loginSchema>;
+
+export const userUpdateSchema = z.object({
+  firstName: z
+    .union([
+      z.string().min(1, "First name is required").max(50, "Must be < 50 chars"),
+      z.literal(""),
+    ])
+    .optional(),
+
+  lastName: z
+    .union([
+      z.string().min(1, "Last name is required").max(50, "Must be < 50 chars"),
+      z.literal(""),
+    ])
+    .optional(),
+
+  password: z
+    .union([
+      z.string().min(6, "Password must be at least 6 characters"),
+      z.literal(""),
+    ])
+    .optional(),
+});
+
+export type UserUpdatePayload = z.infer<typeof userUpdateSchema>;

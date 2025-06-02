@@ -21,7 +21,7 @@ const LoginPage = () => {
     try {
       const result = await loginUser(data);
       showToast(result.message || "Login successful", "success");
-      login(result.authToken);
+      login(result.authToken, result.user);
       navigate("/");
     } catch (err: any) {
       showToast(err.message || "Login Failed", "error");
@@ -35,7 +35,11 @@ const LoginPage = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex flex-col gap-2 justify-center items-center">
-          <img src={AppLogo} className="h-12 w-12 rounded-lg" />
+          <img
+            src={AppLogo}
+            className="h-12 w-12 rounded-lg hover:cursor-pointer"
+            onClick={() => navigate("/")}
+          />
           <h2 className="font-semibold text-2xl">Welcome back 👋</h2>
         </div>
 

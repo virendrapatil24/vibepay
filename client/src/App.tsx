@@ -10,6 +10,7 @@ import SignupPage from "./pages/SignupPage";
 import Logout from "./components/Logout";
 import { useAuthContext } from "./hooks/useAuthContext";
 import DashboardPage from "./pages/DashboardPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
   const { user } = useAuthContext();
@@ -29,6 +30,10 @@ function App() {
         <Route
           path="/dashboard"
           element={user ? <DashboardPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/profile"
+          element={user ? <ProfilePage /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

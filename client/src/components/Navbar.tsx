@@ -9,7 +9,6 @@ const menuOptions = [
   { name: "Features", path: "#" },
   { name: "Update", path: "#" },
   { name: "Help", path: "#" },
-  { name: "Customers", path: "#" },
 ];
 
 const Navbar = () => {
@@ -24,7 +23,8 @@ const Navbar = () => {
             <img
               src={AppLogo}
               alt="vibepay_logo"
-              className="h-12 w-12 relative rounded-lg"
+              className="h-12 w-12 relative rounded-lg hover:cursor-pointer"
+              onClick={() => navigate("/")}
             />
           </div>
           <Menu className="text-white h-10 w-10 sm:hidden" />
@@ -33,12 +33,21 @@ const Navbar = () => {
               <MenuLinks name={options.name} path={options.path} key={index} />
             ))}
             {user ? (
-              <button
-                className="bg-white/90 hover:bg-white py-2 px-4 rounded-lg transition duration-300"
-                onClick={() => navigate("/logout")}
-              >
-                Sign Out
-              </button>
+              <>
+                <MenuLinks name="Dashboard" path="/dashboard" />
+                <div
+                  className="cursor-pointer p-4 rounded-full bg-white/90 hover:bg-white  transition duration-300  text-black  flex items-center justify-center w-10 h-10 shadow"
+                  onClick={() => navigate("/profile")}
+                >
+                  {user?.firstName?.[0]?.toUpperCase()}
+                </div>
+                <button
+                  className="bg-white/90 hover:bg-white py-2 px-4 rounded-lg transition duration-300"
+                  onClick={() => navigate("/logout")}
+                >
+                  Sign Out
+                </button>
+              </>
             ) : (
               <>
                 <button
