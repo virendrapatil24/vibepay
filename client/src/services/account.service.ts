@@ -27,3 +27,25 @@ export const searchUsers = async (userName: string) => {
     throw new Error(err.message || "Failed to search users!");
   }
 };
+
+export const sendMoney = async (amount: number, userId: string) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/account/send`,
+      {
+        amount,
+        recipientId: userId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+        validateStatus: () => true,
+      }
+    );
+
+    return handleResponse(response);
+  } catch (err: any) {
+    throw new Error(err.message || "Failed to send money to recipient");
+  }
+};
