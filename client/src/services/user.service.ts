@@ -3,18 +3,8 @@ import {
   SignupFormPayload,
   UserUpdatePayload,
 } from "../types/user.types";
-import axios, { AxiosResponse } from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
-const authToken = localStorage.getItem("vibepayAuthToken");
-
-const handleResponse = (response: AxiosResponse) => {
-  const { status, data } = response;
-  if (status !== 200 && status !== 201) {
-    throw new Error(data?.error || "Something went wrong");
-  }
-  return data;
-};
+import axios from "axios";
+import { API_URL, authToken, handleResponse } from "./utils.service";
 
 export const singupUser = async (payload: SignupFormPayload) => {
   try {

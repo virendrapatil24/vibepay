@@ -1,9 +1,11 @@
+import Dashboard from "../components/Dashboard";
 import Navbar from "../components/Navbar";
 
 const DashboardPage = () => {
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen">
       <Navbar />
+      <Dashboard />
     </div>
   );
 };
