@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_URL, authToken, handleResponse } from "./utils.service";
+import { sendMoneyPayload } from "../types/account.types";
 
 export const getBalance = async () => {
   try {
@@ -28,21 +29,14 @@ export const searchUsers = async (userName: string) => {
   }
 };
 
-export const sendMoney = async (amount: number, userId: string) => {
+export const sendMoney = async (payload: sendMoneyPayload) => {
   try {
-    const response = await axios.post(
-      `${API_URL}/account/send`,
-      {
-        amount,
-        recipientId: userId,
+    const response = await axios.post(`${API_URL}/account/send`, payload, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-        validateStatus: () => true,
-      }
-    );
+      validateStatus: () => true,
+    });
 
     return handleResponse(response);
   } catch (err: any) {

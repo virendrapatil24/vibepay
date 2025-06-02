@@ -6,13 +6,16 @@ import {
   sendMoney,
 } from "../services/account.service";
 import { Search } from "lucide-react";
+import { recipientUserType } from "../types/account.types";
 
 const Dashboard = () => {
   const { showToast } = useToast();
   const [balance, setBalance] = useState(0);
-  const [recipientUser, setRecipientUser] = useState(null);
+  const [recipientUser, setRecipientUser] = useState<recipientUserType | null>(
+    null
+  );
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<recipientUserType[]>([]);
   const [amount, setAmount] = useState(0);
 
   const handleFunds = () => {
@@ -22,10 +25,20 @@ const Dashboard = () => {
   const handleSendMoney = async () => {
     try {
       if (!recipientUser) {
-        showToast(err.message || "Money Transfer Failed", "error");
+        showToast("Recipient user not found", "error");
         return;
       }
-      const result = await sendMoney(amount, recipientUser.id);
+      if (!amount || (amount < 1 && amount < balance)) {
+        showToast("Amount should be more than 0.", "error");
+        return;
+      }
+
+      const data = {
+        amount,
+        recipientId: recipientUser.id,
+      };
+
+      const result = await sendMoney(data);
       setBalance(result.newBalance);
       setRecipientUser(null);
       showToast(result.message || "Money Transfer successful", "success");
@@ -57,8 +70,6 @@ const Dashboard = () => {
 
     return () => clearTimeout(handler);
   }, [searchTerm]);
-
-  console.log(searchResults);
 
   return (
     <div className="p-2">
