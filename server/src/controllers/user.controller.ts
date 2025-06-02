@@ -46,7 +46,7 @@ export const createUser = async (
 
   await Account.create({
     userId,
-    balance: 1 + Math.floor(Math.random() * 10000),
+    balance: 1 + Math.floor(Math.random() * 1000000),
   });
 
   res.status(201).json({ message: "User created successfully" });
